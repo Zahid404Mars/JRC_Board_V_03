@@ -1,0 +1,512 @@
+{% extends 'shared/_MainLayout.html' %} {% load static %} {% block head-content %}
+<title>{{ title }}</title>
+{% endblock %}{% block breadcrums %}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">{{ title }}</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">{{ title }}</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <!-- Device Info start -->
+        <div class="card-primary card-outline">
+            <div class="text-right">
+                <br>
+                <label for="device-name">Device name: <span class="form-control-lg col-2 text-primary">{{ deviceqs.Name }}</span></label>
+
+
+                <label for="device-name">Device location: <span class="form-control-lg col-2 text-primary">{{ deviceqs.Location}}</span></label>
+
+
+                <label for="device-name">Date of Registration: <span class="form-control-lg col-2 text-primary">{{ date_fa }}</span></label>
+
+
+                <label for="device-name">Device version: <span class="form-control-lg col-2 text-primary">{{ deviceqs.Version}}</span></label>
+
+                <br>
+            </div>
+        </div>
+        <hr>
+        <!-- Device Info end -->
+    </div>
+    <!-- Sampling Rate and Log Rate input start -->
+    
+    <div class="col-md-12">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Sampling each {{ deviceqs.Sampling_Rate }} minutes</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="sample">Sample: </label>
+                        <div class="input-group mb-3">
+                            <!-- /btn-group -->
+                            {{ log_sample.Sampling_Rate }}
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-success">Sample</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        {% for error in log_sample.Sampling_Rate.errors %}
+                        <br>
+                        <p style="color: red;">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Sampling Rate and Log Rate input end -->
+    <!-- small boxes -->
+    <div class="row icon-white">
+        <!-- 1. Battery box -->
+       
+        <!-- ./col -->
+        <!-- 2. Lux box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box light-color">
+                <div class="inner">
+                    <h3 id="lux">{{last_data.Lux_Log}}<sup style="font-size: 20px">PPT</sup></h3>
+                    <p>TDS</p>
+                     
+                </div>
+                <div class="icon">
+                    <i class="fa fa-sun-o " aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- 3. Humidity box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box rh-color">
+                <div class="inner">
+                    <h3 id="humidity">{{last_data.Humidity_Log}}<sup style="font-size: 20px">RH</sup></h3>
+                    <p>Humidity</p>
+                   
+                </div>
+                <div class="icon">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- 4. temperature box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box tempurture-color">
+                <div class="inner">
+                    <h3 id="temperature">{{last_data.Temperature_Log}}<sup style="font-size: 20px">°C</sup></h3>
+                    <p>Temperature</p>
+                   
+                </div>
+                <div class="icon">
+                    <i class="fa fa-thermometer-half"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- 5. Soil moisture box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box rhe-color">
+                <div class="inner">
+                    <h3 id="soil-moisture">{{last_data.SoilMoisture_Log}}<sup style="font-size: 20px">mg/kg</sup></h3>
+                    <p>Nitrogen</p>
+                      
+                </div>
+                <div class="icon">
+                    <i class="fa fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- 6. Soil tempurature box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box ground-temp-color">
+                <div class="inner">
+                    <h3 id="soil-temp">{{last_data.SoilTemperature_Log}}<sup style="font-size: 20px">mg/kg</sup></h3>
+                    <p>Phosphorus</p>
+                    
+                </div>
+                <div class="icon">
+                    <i class="fa fa-globe "></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- 7. EC box -->
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box ec-color">
+                <div class="inner">
+                    <h3 id="ec">{{last_data.EC_Log}}<sup style="font-size: 20px">mg/kg</sup></h3>
+                    <p>Potassium</p>
+                     
+                </div>
+                <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-2 col-6 ">
+            <!-- small box -->
+            <div class="small-box battery-color">
+                <div class="inner">
+                    <h3 id="battery">{{last_data.Battery_Log}}<sup style="font-size: 20px">mg/kg</sup></h3>
+                    <p>Salinity</p>
+                   
+                </div>
+                <div class="icon">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box ph-color">
+                <div class="inner">
+                    <h3 id="ph">{{last_data.PH_Log}}<sup style="font-size: 20px">PH</sup></h3>
+                    <p>PH</p>
+                    
+                </div>
+                <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box airAlt-color">
+                <div class="inner">
+                    <h3 id="air-alt">{{last_data.airAlt_Log}}<sup style="font-size: 20px">pa</sup></h3>
+                    <p>AirAlt</p>
+                    
+                </div>
+                <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box airP-color">
+                <div class="inner">
+                    <h3 id="air-pressure">{{last_data.airP_Log}}<sup style="font-size: 20px">pa</sup></h3>
+                    <p>AirPressure</p>
+                     
+                </div>
+                <div class="icon">
+                    <i class="fa fa-pie-chart"></i>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-lg-2 col-6">
+            <!-- small box -->
+            <div class="small-box airTemp-color">
+                <div class="inner">
+                    <h3 id="air-temp">{{ last_data.airTemp_Log }}<sup style="font-size: 20px">°C</sup></h3>
+                    <p>AirTemperature</p>
+                    
+                </div>
+                <div class="icon">
+                    <i class="fa fa-thermometer-half"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ./col -->
+    </div>
+    <style>
+        /* Datepicker Input Styling */
+        #start_date, #end_date {
+            width: 100%;
+            background-color: #ffebcd; /* Light Peach Color */
+            border: 2px solid #ff4500; /* Orange-Red Border */
+            color: #333; /* Dark Gray Text */
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+    
+        /* Hover Effect */
+        #start_date:hover, #end_date:hover {
+            background-color: #ffe4c4; /* Slightly Darker Peach */
+        }
+    
+        /* Focus Effect */
+        #start_date:focus, #end_date:focus {
+            border-color: #ff6347; /* Tomato Color */
+            box-shadow: 0px 0px 8px rgba(255, 99, 71, 0.6);
+            background-color: #fffaf0; /* Light Ivory */
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" class="form-control">
+        </div>
+        <div class="col-md-5">
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" class="form-control">
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+            <button onclick="filterChartData()" class="btn btn-primary w-100">Search</button>
+        </div>
+    </div>
+    
+
+    <div class="col-12">
+        <!-- Custom Tabs -->
+        <div class="card">
+          <div class="card-header d-flex p-0">
+            <ul id="tabs_chart" class="nav nav-pills ml-auto p-2">
+              <li class="nav-item"><a id="Lux_tab" onclick="ChangeTabColor(this)" class="nav-link light-color" href="#tab_1" data-toggle="tab">TDS</a></li>
+              <li class="nav-item"><a id="Humidity_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_2" data-toggle="tab">Humidity</a></li>
+              <li class="nav-item"><a id="Temperature_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_3" data-toggle="tab">Temperature</a></li>
+              <li class="nav-item"><a id="SoilMoisture_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_4" data-toggle="tab">Nitrogen</a></li>
+              <li class="nav-item"><a id="SoilTemperature_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_5" data-toggle="tab">Phosphorus</a></li>
+              <li class="nav-item"><a id="EC_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_6" data-toggle="tab">Pottasium</a></li>
+              <li class="nav-item"><a id="Salinity_tab" onclick="ChangeTabColor(this)" class="nav-link " href="#tab_12" data-toggle="tab">Salinity</a></li>
+              <li class="nav-item"><a id="PH_tab" onclick="ChangeTabColor(this)" class="nav-link " href="#tab_8" data-toggle="tab">PH</a></li>
+              <li class="nav-item"><a id="airAlt_tab" onclick="ChangeTabColor(this)" class="nav-link " href="#tab_9" data-toggle="tab">airAlt</a></li>
+              <li class="nav-item"><a id="airP_tab" onclick="ChangeTabColor(this)" class="nav-link " href="#tab_10" data-toggle="tab">airP</a></li>
+              <li class="nav-item"><a id="airTemp_tab" onclick="ChangeTabColor(this)" class="nav-link " href="#tab_11" data-toggle="tab">airTemp</a></li>
+              <li class="nav-item"><a id="Total_tab" onclick="ChangeTabColor(this)" class="nav-link" href="#tab_7" data-toggle="tab">Total diagram</a></li>
+            </ul>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div class="tab-content">
+                
+              <div class="tab-pane  " id="tab_12">
+                <canvas id="Battery_Log"></canvas>
+              </div>
+
+              <div class="tab-pane active" id="tab_1">
+                <canvas id="Lux_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_2">
+                <canvas id="Humidity_Log"></canvas>
+              </div>
+          
+              <div class="tab-pane" id="tab_3">
+                <canvas id="Temperature_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_4">
+                <canvas id="SoilMoisture_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_5">
+                <canvas id="SoilTemperature_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_6">
+                <canvas id="EC_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_8">
+                <canvas id="PH_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_9">
+                <canvas id="airAlt_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_10">
+                <canvas id="airP_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_11">
+                <canvas id="airTemp_Log"></canvas>
+              </div>
+              <div class="tab-pane" id="tab_7">
+                <canvas id="total"></canvas>
+              </div>
+            
+            </div>
+            <!-- /.tab-content -->
+          </div><!-- /.card-body -->
+        </div>
+        <!-- ./card -->
+      </div>
+
+<div class="card-footer" style="float: none; margin: auto; text-align: center;">
+    <a href="/reports/{{device_id}}"><button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Reporting </button></a>
+</div>
+
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function fetchData() {
+        $.ajax({
+            url: '/get_device_info/{{device_id}}/', // এখানে আপনার API endpoint দিতে হবে
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Success, update the values in HTML
+                $('#battery').text(data.Battery_Log + ' mg/kg');
+                $('#lux').text(data.Lux_Log + ' PPT');
+                $('#humidity').text(data.Humidity_Log + ' RH');
+                $('#temperature').text(data.Temperature_Log + ' °C');
+                $('#soil-moisture').text(data.SoilMoisture_Log + ' mg/kg');
+                $('#soil-temp').text(data.SoilTemperature_Log + ' mg/kg');
+                $('#ec').text(data.EC_Log + ' mg/kg');
+                $('#ph').text(data.PH_Log + ' PH');
+                $('#air-alt').text(data.airAlt_Log + ' pa');
+                $('#air-pressure').text(data.airP_Log + ' pa');
+                $('#air-temp').text(data.airTemp_Log + ' °C');
+            },
+            error: function() {
+                console.log('Error fetching data');
+            }
+        });
+    }
+
+    // Call the fetchData function every 5 seconds (5000 milliseconds)
+    setInterval(fetchData, 5000);
+</script>
+
+<script src="{% static 'js\chart-area-demo.js' %}"></script>
+
+<script>
+    // Define chart contexts as global variables
+    var ctx12, ctx1, ctx2, ctx3, ctx4, ctx5, ctx6, ctx7, ctx8, ctx9, ctx10, ctx11;
+    var labels, Battery_Log, Lux_Log, Humidity_Log, Temperature_Log, SoilMoisture_Log, SoilTemperature_Log, EC_Log, PH_Log, airAlt_Log, airP_Log, airTemp_Log;
+    
+    window.onload = function() {
+        // Initialize chart contexts
+        ctx12 = document.getElementById('Battery_Log').getContext('2d');
+        ctx1 = document.getElementById('Lux_Log').getContext('2d');
+        ctx2 = document.getElementById('Humidity_Log').getContext('2d');
+        ctx3 = document.getElementById('Temperature_Log').getContext('2d');
+        ctx4 = document.getElementById('SoilMoisture_Log').getContext('2d');
+        ctx5 = document.getElementById('SoilTemperature_Log').getContext('2d');
+        ctx6 = document.getElementById('EC_Log').getContext('2d');
+        ctx7 = document.getElementById('total').getContext('2d');
+        ctx8 = document.getElementById('PH_Log').getContext('2d');
+        ctx9 = document.getElementById('airAlt_Log').getContext('2d');
+        ctx10 = document.getElementById('airP_Log').getContext('2d');
+        ctx11 = document.getElementById('airTemp_Log').getContext('2d');
+    
+        // Initialize the data from the server (or wherever it's coming from)
+        labels = {{ labels|safe }};
+        Battery_Log = {{ Battery_Log|safe }};
+        Lux_Log = {{ Lux_Log|safe }};
+        Humidity_Log = {{ Humidity_Log|safe }};
+        Temperature_Log = {{ Temperature_Log|safe }};
+        SoilMoisture_Log = {{ SoilMoisture_Log|safe }};
+        SoilTemperature_Log = {{ SoilTemperature_Log|safe }};
+        EC_Log = {{ EC_Log|safe }};
+        PH_Log = {{ PH_Log|safe }};
+        airAlt_Log = {{ airAlt_Log|safe }};
+        airP_Log = {{ airP_Log|safe }};
+        airTemp_Log = {{ airTemp_Log|safe }};
+    
+        // Initialize charts with full data
+        Battery_Log_fun(labels, Battery_Log, ctx12);
+        Lux_Log_fun(labels, Lux_Log, ctx1);
+        Humidity_Log_fun(labels, Humidity_Log, ctx2);
+        Temperature_Log_fun(labels, Temperature_Log, ctx3);
+        SoilMoisture_Log_fun(labels, SoilMoisture_Log, ctx4);
+        SoilTemperature_Log_fun(labels, SoilTemperature_Log, ctx5);
+        EC_Log_fun(labels, EC_Log, ctx6);
+        PH_Log_fun(labels, PH_Log, ctx8);
+        airAlt_Log_fun(labels, airAlt_Log, ctx9);
+        airP_Log_fun(labels, airP_Log, ctx10);
+        airTemp_Log_fun(labels, airTemp_Log, ctx11);
+        total_fun(labels, Battery_Log, Lux_Log, Humidity_Log, Temperature_Log, SoilMoisture_Log, SoilTemperature_Log, EC_Log, PH_Log, airAlt_Log, airP_Log, airTemp_Log, ctx7);
+    
+        // Event listener for the filter button
+        document.querySelector('.btn').addEventListener('click', filterChartData);
+    };
+    
+    function filterChartData() {
+        var startDate = document.getElementById('start_date').value;
+        var endDate = document.getElementById('end_date').value;
+    
+        // Make sure both dates are selected before proceeding
+        if (!startDate || !endDate) {
+            alert("Please select both start and end dates.");
+            return;
+        }
+        console.log("Filtered Labels:", filteredLabels);
+    
+        // Filter the data using the selected date range
+        var filteredLabels = [];
+        var filteredBatteryLog = [];
+        var filteredLuxLog = [];
+        var filteredHumidityLog = [];
+        var filteredTemperatureLog = [];
+        var filteredSoilMoistureLog = [];
+        var filteredSoilTemperatureLog = [];
+        var filteredECLog = [];
+        var filteredPHLog = [];
+        var filteredAirAltLog = [];
+        var filteredAirPLog = [];
+        var filteredAirTempLog = [];
+    
+        for (var i = 0; i < labels.length; i++) {
+            var currentDate = new Date(labels[i]);
+            if (currentDate >= new Date(startDate) && currentDate <= new Date(endDate)) {
+                filteredLabels.push(labels[i]);
+                filteredBatteryLog.push(Battery_Log[i]);
+                filteredLuxLog.push(Lux_Log[i]);
+                filteredHumidityLog.push(Humidity_Log[i]);
+                filteredTemperatureLog.push(Temperature_Log[i]);
+                filteredSoilMoistureLog.push(SoilMoisture_Log[i]);
+                filteredSoilTemperatureLog.push(SoilTemperature_Log[i]);
+                filteredECLog.push(EC_Log[i]);
+                filteredPHLog.push(PH_Log[i]);
+                filteredAirAltLog.push(airAlt_Log[i]);
+                filteredAirPLog.push(airP_Log[i]);
+                filteredAirTempLog.push(airTemp_Log[i]);
+            }
+        }
+    
+        // Re-render the charts with the filtered data
+        Battery_Log_fun(filteredLabels, filteredBatteryLog, ctx12);
+        Lux_Log_fun(filteredLabels, filteredLuxLog, ctx1);
+        Humidity_Log_fun(filteredLabels, filteredHumidityLog, ctx2);
+        Temperature_Log_fun(filteredLabels, filteredTemperatureLog, ctx3);
+        SoilMoisture_Log_fun(filteredLabels, filteredSoilMoistureLog, ctx4);
+        SoilTemperature_Log_fun(filteredLabels, filteredSoilTemperatureLog, ctx5);
+        EC_Log_fun(filteredLabels, filteredECLog, ctx6);
+        PH_Log_fun(filteredLabels, filteredPHLog, ctx8);
+        airAlt_Log_fun(filteredLabels, filteredAirAltLog, ctx9);
+        airP_Log_fun(filteredLabels, filteredAirPLog, ctx10);
+        airTemp_Log_fun(filteredLabels, filteredAirTempLog, ctx11);
+        total_fun(filteredLabels, filteredBatteryLog, filteredLuxLog, filteredHumidityLog, filteredTemperatureLog, filteredSoilMoistureLog, filteredSoilTemperatureLog, filteredECLog, filteredPHLog, filteredAirAltLog, filteredAirPLog, filteredAirTempLog, ctx7);
+    }
+    </script>
+    
+{% endblock scripts %}
