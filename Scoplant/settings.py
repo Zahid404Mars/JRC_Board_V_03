@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import dj_database_url
+import dj_database_url  
 
 from pathlib import Path
 import os
@@ -22,14 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = 'django-insecure--v@1sg2p02o%1xd9y3%h^o&-j1ud_z@hcgzii*kfuz9=*^dm0)'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG","False").lower() == "true"
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ["*"]
 
 # config/settings.py
 LOGIN_REDIRECT_URL = '/'
@@ -99,8 +99,7 @@ DATABASES = {
         'NAME': 'demodatabase',
     }
 }
-database_url =os.environ.get("DATABASE_URL")
-DATABASES['default']= dj_database_url.parse(database_url)
+DATABASES['default']= dj_database_url.parse("postgresql://jrc_board_v_03_user:04EoMIgMu79TBTfRMkUoRrSHMMSNgIpv@dpg-cupo6dtumphs73e9j1j0-a.oregon-postgres.render.com/jrc_board_v_03")
 
 #postgresql://jrc_board_v_03_user:04EoMIgMu79TBTfRMkUoRrSHMMSNgIpv@dpg-cupo6dtumphs73e9j1j0-a.oregon-postgres.render.com/jrc_board_v_03
 
