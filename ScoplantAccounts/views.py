@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
+from django.contrib.auth import logout
 from .forms import  SignUpForm, LoginForm, ForgotPasswordForm
 from django.contrib.auth.models import User
 import re
@@ -52,6 +53,14 @@ def user_signup(request):
         'title': "Register"
     }
     return render(request, 'SignUp.html', context)
+
+
+from django.shortcuts import redirect
+
+def user_logout(request):
+    logout(request)
+    # এখানে লগআউট সংক্রান্ত কার্যক্রম করো
+    return redirect('/')
 
 
 def password_reset_request(request):

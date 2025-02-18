@@ -29,6 +29,9 @@ from django.http import JsonResponse
 
 
 
+
+
+
 # 404 Custom Error
 def error_404_view(request, exception):
     return render(request, '404.html')
@@ -821,3 +824,6 @@ def reporting_device(request, device_id):
         'avatar_gen_url': avatar_gen,
     }
     return render(request, 'reporting.html', context)
+
+
+
